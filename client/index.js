@@ -106,10 +106,14 @@ function initForm() {
 }
 
 async function initSocket() {
-  const socket = await linkSocket();
+  socket = await createSocket();
+
+  const me = await joinServer(socket, world.me.id);
 
   /** @type { MetaverseMap } */
-  world.map = socket.map;
+  const map = await loadMap(world.me.map);
+
+  world.map = map;
 
   // set start position
   const randomStartIndex = Math.floor(Math.random() * world.map.start.length);
