@@ -144,6 +144,7 @@ function drawCanvas() {
   fpsHz = Math.floor(
     logLength * (1000 / (renderLogs[logLength - 1] - renderLogs[0]))
   );
+  if (fpsHz === Infinity) fpsHz = 0;
 
   if (isJoined) {
     drawMap();
