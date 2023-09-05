@@ -23,7 +23,7 @@ export function joinWebSocketServer(ip, data) {
       ip: ip,
       id: id,
       map: "init",
-      position: [5, 5],
+      position: [],
       speed: 0.1,
       lastConnection: new Date(),
     });
@@ -36,8 +36,10 @@ export function joinWebSocketServer(ip, data) {
   const map = getMap(joinedUser.map);
 
   // set start position
-  const randomStartIndex = Math.floor(Math.random() * map.start.length);
-  joinedUser.position = [].concat(map.start[randomStartIndex]);
+  if (joinedUser.position.length === 0) {
+    const randomStartIndex = Math.floor(Math.random() * map.start.length);
+    joinedUser.position = [].concat(map.start[randomStartIndex]);
+  }
 
   return joinedUser;
 }
