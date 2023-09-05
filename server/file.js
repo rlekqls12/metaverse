@@ -8,6 +8,13 @@ export const PUBLISH_SERVER_DIRECTORY = BASE_DIRECTORY + "/server";
 
 // file pass
 export function pipeFile(response, fileDirectory) {
+  const isExistFile = fs.existsSync(fileDirectory);
+  if (isExistFile === false) {
+    response.statusCode = 404;
+    response.end();
+    return;
+  }
+
   const mimeType = mimeTypes.lookup(fileDirectory);
   const contentType = mimeTypes.contentType(mimeType);
   response.setHeader("Content-Type", contentType);

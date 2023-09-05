@@ -4,6 +4,7 @@ import {
   PUBLISH_SERVER_DIRECTORY,
   pipeFile,
 } from "./file.js";
+import { metaverseData } from "./data.js";
 
 // server start
 export function createServer() {
@@ -18,11 +19,22 @@ export function createServer() {
   });
 
   // publish client folder
-  app.use(express.static(PUBLISH_CLIENT_DIRECTORY));
+  const staticClientDirectory = express.static(PUBLISH_CLIENT_DIRECTORY);
+  app.use(staticClientDirectory);
 
-  // TODO: temp map
-  app.get("/server/map/init.json", function (request, response) {
-    const fileDirectory = PUBLISH_SERVER_DIRECTORY + "/map/init.json";
+  // load map (can joined user)
+  app.get("/server/map/:mapId", function (request, response) {
+    const ip = request.socket.address().address;
+    const isJoinedUser = metaverseData.users.some((user) => user.ip === ip);
+
+    if (isJoinedUser === false) {
+      response.statusCode = 404;
+      response.end();
+      return;
+    }
+
+    const fileDirectory =
+      PUBLISH_SERVER_DIRECTORY + `/map/${request.params.mapId}.json`;
     pipeFile(response, fileDirectory);
   });
 
