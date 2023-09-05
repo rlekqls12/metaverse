@@ -6,8 +6,8 @@ import {
 } from "./file.js";
 import { metaverseData } from "./data.js";
 
-// server start
-export function createServer() {
+// create express server app
+export function createServerApp() {
   const app = express();
 
   // default header setting
@@ -23,8 +23,8 @@ export function createServer() {
   app.use(staticClientDirectory);
 
   // load map (can joined user)
-  app.get("/server/map/:mapId", function (request, response) {
-    const ip = request.socket.address().address;
+  app.get("/map/:mapId", function (request, response) {
+    const ip = request.socket.remoteAddress;
     const isJoinedUser = metaverseData.users.some((user) => user.ip === ip);
 
     if (isJoinedUser === false) {

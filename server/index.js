@@ -1,20 +1,18 @@
 import { metaverseData } from "./data.js";
-import { createServer } from "./express.js";
+import { createServerApp } from "./express.js";
 import { PUBLISH_CLIENT_DIRECTORY } from "./file.js";
-import { createWebSocketServer, addWebSocketEvent } from "./socket.js";
+import { createWebSocketServer } from "./socket.js";
 
 const port = 80;
-const server = createServer();
-server.listen(port, function () {
+const app = createServerApp();
+const server = app.listen(port, function () {
   console.log(`>>> Server Running ${port} Port`);
   console.log(">>> Publish", PUBLISH_CLIENT_DIRECTORY);
 });
 
 const webSocketServer = createWebSocketServer({ server });
-console.log(`>>> webSocket Running ${port} Port`);
-addWebSocketEvent(webSocketServer, function (webSocket, request) {
-  const ip =
-    request.headers["x-forwarded-for"] || request.socket.address().address;
+webSocketServer.on("connection", function (webSocket, request) {
+  const ip = request.headers["x-forwarded-for"] || request.socket.remoteAddress;
 
   console.log(">>> Join User", ip);
 
@@ -37,3 +35,4 @@ addWebSocketEvent(webSocketServer, function (webSocket, request) {
     clearInterval(connectCheckInterval);
   });
 });
+console.log(`>>> webSocket Running ${port} Port`);
