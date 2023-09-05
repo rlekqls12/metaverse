@@ -10,6 +10,12 @@ function onKeyChange(event) {
   }
 }
 
+function clearKeys() {
+  Object.keys(keys).forEach(function (key) {
+    delete keys[key];
+  });
+}
+
 function onMove() {
   const keyList = Object.keys(keys);
 

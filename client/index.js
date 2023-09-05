@@ -28,6 +28,9 @@ const world = {
 // join
 let isJoined = false;
 
+// window is not focused
+let isNotFocusedWindow = false;
+
 const DEBUG = true;
 
 // ---------------------------------------------------------------------- [ INIT ]
@@ -123,6 +126,18 @@ function initCanvas() {
 }
 
 function drawCanvas() {
+  isNotFocusedWindow =
+    document.hidden ||
+    document.visibilityState === "hidden" ||
+    document.hasFocus() === false;
+
+  if (isNotFocusedWindow) {
+    // if not focused, cant move
+    clearKeys();
+    requestAnimationFrame(drawCanvas);
+    return;
+  }
+
   // get fps
   const now = performance.now();
   renderLogs.push(now);
