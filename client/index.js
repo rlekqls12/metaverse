@@ -127,7 +127,10 @@ function drawCanvas() {
   const now = performance.now();
   renderLogs.push(now);
   renderLogs = renderLogs.filter((log) => now - log < 1000);
-  fpsHz = renderLogs.length;
+  const logLength = renderLogs.length;
+  fpsHz = Math.floor(
+    logLength * (1000 / (renderLogs[logLength - 1] - renderLogs[0]))
+  );
 
   if (isJoined) {
     drawMap();
