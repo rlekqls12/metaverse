@@ -21,7 +21,7 @@ app.use(function (request, response, next) {
 app.use(express.static(PUBLISH_CLIENT_DIRECTORY));
 
 // TODO: temp map
-app.use("/server/map/init.json", function (request, response) {
+app.get("/server/map/init.json", function (request, response) {
   const fileDirectory = PUBLISH_SERVER_DIRECTORY + "/map/init.json";
   pipeFile(response, fileDirectory);
 });
