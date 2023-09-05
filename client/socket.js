@@ -1,5 +1,6 @@
 async function createSocket() {
-  const webSocket = new WebSocket("ws://localhost:80");
+  const host = location.host;
+  const webSocket = new WebSocket("ws://" + host);
 
   let resolver = () => void 0;
   const waitConnectSocket = new Promise(function (resolve) {
