@@ -96,6 +96,7 @@ function initForm() {
         .catch(function (reason) {
           // failed
           alert(reason);
+          console.error(reason);
           joinForm.classList.remove("loading");
           joinButton.setAttribute("disabled", false);
           initForm();
@@ -106,18 +107,49 @@ function initForm() {
 }
 
 async function initSocket() {
-  socket = await createSocket();
+  try {
+    socket = await createSocket();
 
+    socket.onclose = function (event) {
+      alert("Server Disconnected");
+      document.body.remove();
+      if (event.wasClean === false) {
+        location.reload();
+      }
+    };
+
+    socket.addEventListener("message", function (event) {
+      const data = JSON.parse(event.data);
+
+      // still alive
+      if (data.type === "SOCKET_SEND_TYPE_SERVER_CHECK") {
+        socket.send(
+          JSON.stringify({ type: "SOCKET_SEND_TYPE_SERVER_CHECK_RESPONSE" })
+        );
+      }
+
+      // another users are using the nickname
+      if (data.type === "SOCKET_SEND_TYPE_ALREADY_USE_NICKNAME") {
+        socket.onclose = undefined;
+        alert("Another user is using that nickname");
+        document.body.remove();
+        location.reload();
+      }
+
+      // TODO: load user list
+    });
+  } catch {
+    alert("Can't Connect Server");
+    document.body.remove();
+  }
+
+  /** @type { MetaverseMe } */
   const me = await joinServer(socket, world.me.id);
+  world.me = me;
 
   /** @type { MetaverseMap } */
   const map = await loadMap(world.me.map);
-
   world.map = map;
-
-  // set start position
-  const randomStartIndex = Math.floor(Math.random() * world.map.start.length);
-  world.me.position = [].concat(world.map.start[randomStartIndex]);
 }
 
 function initCanvas() {

@@ -1,38 +1,109 @@
-import { metaverseData } from "./data.js";
 import { createServerApp } from "./express.js";
 import { PUBLISH_CLIENT_DIRECTORY } from "./file.js";
-import { createWebSocketServer } from "./socket.js";
+import {
+  createWebSocketServer,
+  joinWebSocketServer,
+  updateWebSocketUser,
+} from "./socket.js";
 
 const port = 80;
+function serverLog(...content) {
+  console.log(`[${new Date().toLocaleString("ko")}]`, ...content);
+}
+
+// ---------------------------------------------------------------------- [ SERVER ]
 const app = createServerApp();
 const server = app.listen(port, function () {
-  console.log(`>>> Server Running ${port} Port`);
-  console.log(">>> Publish", PUBLISH_CLIENT_DIRECTORY);
+  serverLog(`>>> Server Running ${port} Port`);
+  serverLog(`>>> Publish`, PUBLISH_CLIENT_DIRECTORY);
 });
 
+// ---------------------------------------------------------------------- [ WEB SOCKET ]
 const webSocketServer = createWebSocketServer({ server });
 webSocketServer.on("connection", function (webSocket, request) {
+  // ------------------------------ [ CONNECT SERVER ]
   const ip = request.headers["x-forwarded-for"] || request.socket.remoteAddress;
+  let id = "",
+    joinedUser = {
+      ip: "",
+      id: "",
+      map: "",
+      position: [0, 0],
+      speed: 0,
+      lastConnection: 0,
+    };
 
-  console.log(">>> Join User", ip);
+  serverLog(`>>> #[${ip}] Join Client`);
 
+  // ------------------------------ [ RECEIVE MESSAGE ]
   webSocket.on("message", function (message) {
-    console.log(">>> #SOCKET MESSAGE", message);
+    const data = JSON.parse(message.toString());
+    serverLog(`>>> #[${ip}] SOCKET MESSAGE`, data);
+
+    // ---------- [ JOIN ]
+    if (data.type === "SOCKET_SEND_TYPE_JOIN") {
+      id = data.data.id;
+
+      try {
+        joinedUser = joinWebSocketServer(ip, data.data);
+
+        // send client me
+        webSocket.send(
+          JSON.stringify({
+            type: "SOCKET_SEND_TYPE_JOIN_RESPONSE",
+            data: {
+              id: joinedUser.id,
+              map: joinedUser.map,
+              position: joinedUser.position,
+              speed: joinedUser.speed,
+            },
+          })
+        );
+
+        serverLog(`>>> #[${ip}] Join User`, id);
+      } catch (error) {
+        serverLog(`>>> #[${ip}] Close Socket`, error, id);
+
+        webSocket.send(
+          JSON.stringify({
+            type: "SOCKET_SEND_TYPE_ALREADY_USE_NICKNAME",
+          })
+        );
+
+        // https://www.rfc-editor.org/rfc/rfc6455.html#section-7.4.1
+        webSocket.close(1000);
+      }
+    }
+
+    // ---------- [ STILL ALIVE ]
+    if (data.type === "SOCKET_SEND_TYPE_SERVER_CHECK_RESPONSE") {
+      updateWebSocketUser(ip, id);
+      serverLog(`>>> #[${ip}] Update User`, id);
+    }
+
+    // ---------- [ MOVE ]
+    // TODO: MOVE
   });
 
+  // ------------------------------ [ CATCH ERROR ]
   webSocket.on("error", function (error) {
-    console.log(">>> #SOCKET ERROR", error);
+    serverLog(`>>> #[${ip}] SOCKET ERROR`, error);
   });
 
+  // ------------------------------ [ CHECK SERVER STATUS, INTERVAL 1000ms ]
   const connectCheckInterval = setInterval(function () {
     if (webSocket.readyState !== webSocket.OPEN) return;
 
-    webSocket.send("SERVER_CHECK");
-  }, 3000);
+    webSocket.send(JSON.stringify({ type: "SOCKET_SEND_TYPE_SERVER_CHECK" }));
+  }, 1000);
 
+  // ------------------------------ [ SEND USER LIST, INTERVAL 150ms ]
+  // TODO: SEND USER LIST
+
+  // ------------------------------ [ CLOSE CONNECT ]
   webSocket.on("close", function () {
-    console.log(">>> Leave User", ip);
+    serverLog(`>>> #[${ip}] Leave User`);
     clearInterval(connectCheckInterval);
   });
 });
-console.log(`>>> webSocket Running ${port} Port`);
+serverLog(`>>> webSocket Running ${port} Port`);
