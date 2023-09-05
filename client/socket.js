@@ -6,10 +6,10 @@ async function createSocket() {
     resolver = resolve;
   });
 
-  webSocket.onopen(function (event) {
+  webSocket.onopen = function (event) {
     console.log("Socket Open >>>", this, event);
     resolver();
-  });
+  };
 
   await waitConnectSocket;
 
