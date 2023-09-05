@@ -40,12 +40,18 @@ function drawTile() {
 }
 
 function drawUsers() {
+  const [centerX, centerY] = [canvasWidth, canvasHeight].map((v) => v / 2);
+
   // me
   context.fillStyle = "red";
-  context.arc(canvasWidth / 2, canvasHeight / 2, 8, 0, Math.PI * 2, true);
+  context.arc(centerX, centerY, 8, 0, Math.PI * 2, true);
   context.fill();
 
-  // TODO: other
+  // id
+  context.fillStyle = "white";
+  context.fillText(world.me.id, centerX, centerY - getFontSize());
+
+  // TODO: other user
 }
 
 function drawFps() {
