@@ -20,6 +20,7 @@ const world = {
   users: [],
   me: {
     id: "",
+    map: "init",
     position: [0, 0],
     speed: 0.1,
   },
@@ -168,7 +169,7 @@ function canvasResize() {
  * @typedef MetaverseWorld
  * @property { MetaverseMap | null } map
  * @property { MetaverseUser[] } users
- * @property { MetaverseUser } me
+ * @property { MetaverseMe } me
  */
 
 /**
@@ -182,6 +183,13 @@ function canvasResize() {
 /**
  * @typedef MetaverseUser
  * @property { string } id
+ * @property { number[] } position
+ */
+
+/**
+ * @typedef MetaverseMe
+ * @property { string } id
+ * @property { string } map
  * @property { number[] } position
  * @property { number } speed
  */
