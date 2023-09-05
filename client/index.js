@@ -83,7 +83,7 @@ function initForm() {
       joinButton.setAttribute("disabled", true);
 
       // socket
-      linkSocket()
+      initSocket()
         .then(function () {
           // success
           joinForm.remove();
@@ -104,17 +104,15 @@ function initForm() {
   );
 }
 
-async function linkSocket() {
-  // TODO: socket
-  const mapResponse = await fetch("../server/map/init.json");
+async function initSocket() {
+  const socket = await linkSocket();
 
   /** @type { MetaverseMap } */
-  const map = await mapResponse.json();
-  world.map = map;
+  world.map = socket.map;
 
   // set start position
-  const randomStartIndex = Math.floor(Math.random() * map.start.length);
-  world.me.position = [].concat(map.start[randomStartIndex]);
+  const randomStartIndex = Math.floor(Math.random() * world.map.start.length);
+  world.me.position = [].concat(world.map.start[randomStartIndex]);
 }
 
 function initCanvas() {
