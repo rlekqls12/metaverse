@@ -29,6 +29,7 @@ export function createServerApp() {
   app.get("/map/:mapId", async function (request, response) {
     const ip = request.socket.remoteAddress;
     const isJoinedUser = metaverseData.users.some((user) => user.ip === ip);
+    serverLog("MAP API", ip, metaverseData.users, isJoinedUser);
 
     if (isJoinedUser === false) {
       response.statusCode = 401;
