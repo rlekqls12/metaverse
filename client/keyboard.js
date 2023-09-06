@@ -83,8 +83,14 @@ function onChat() {
     if (isChatBoxShow === false) {
       chatBox.focus();
     } else {
+      const content = chatBox.value;
       chatBox.value = "";
-      // TODO: send chat
+      socket.send(
+        JSON.stringify({
+          type: "SOCKET_SEND_TYPE_CHAT",
+          data: content.replace(/(\n)$/, ""),
+        })
+      );
     }
   }
 }

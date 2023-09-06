@@ -66,10 +66,7 @@ function drawUsers() {
 
 function drawUser(id, x, y) {
   // color
-  const red =
-    id.split("").reduce((sum, word) => sum + word.charCodeAt() * 333, 0) % 255;
-  const green = (id.length * 33) % 255;
-  const blue = ((1 / red) * 1000) % 255;
+  const [red, green, blue] = getColor(id);
 
   // user
   context.fillStyle = `rgb(${red}, ${green}, ${blue})`;
@@ -81,6 +78,15 @@ function drawUser(id, x, y) {
   // id
   context.fillStyle = "white";
   context.fillText(id, x, y - getFontSize());
+}
+
+function getColor(id) {
+  // color
+  const red =
+    id.split("").reduce((sum, word) => sum + word.charCodeAt() * 333, 0) % 255;
+  const green = (id.length * 33) % 255;
+  const blue = ((1 / red) * 1000) % 255;
+  return [red, green, blue];
 }
 
 function drawFps() {

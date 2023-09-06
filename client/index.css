@@ -40,3 +40,45 @@ body {
   background-color: rgba(255, 255, 255, 0.75);
   resize: none;
 }
+
+#chat-log {
+  position: fixed;
+  left: 10px;
+  bottom: 10px;
+  width: 40vw;
+  max-width: 40vw;
+  height: 40vh;
+  max-height: 40vh;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  opacity: 1;
+  transition: opacity 0.5s ease-in;
+}
+
+.chat-item {
+  width: 100%;
+  padding: 5px;
+  display: flex;
+  gap: 10px;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.chat-time {
+  flex: 5;
+  color: black;
+  white-space: nowrap;
+}
+
+.chat-id {
+  flex: 4;
+  white-space: nowrap;
+}
+
+.chat-content {
+  flex: 8;
+  color: black;
+  word-wrap: break-word;
+  word-break: break-all;
+}

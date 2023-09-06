@@ -18,6 +18,7 @@ let socket = null;
 const world = {
   map: null,
   users: [],
+  chats: [],
   me: {
     id: "",
     map: "init",
@@ -48,6 +49,15 @@ function init() {
     const text = event.target.value || "";
     if (text.length > 8) {
       event.target.value = text.slice(0, 8);
+    }
+  });
+
+  // chat content max length is 180
+  const chatBox = document.getElementById("chat");
+  chatBox.addEventListener("input", function (event) {
+    const text = event.target.value || "";
+    if (text.length > 180) {
+      event.target.value = text.slice(0, 180);
     }
   });
 
@@ -151,6 +161,47 @@ async function initSocket() {
           })
         );
       }
+
+      // load chat log
+      if (data.type === "SOCKET_SEND_TYPE_CHAT_LOG") {
+        world.chats.push(...data.data);
+
+        const [red, green, blue] = getColor(world.me.id);
+        const chatLogBox = document.getElementById("chat-log");
+        data.data.forEach(function (chat) {
+          const chatItemBox = document.createElement("div");
+          chatItemBox.classList.add("chat-item");
+
+          const chatTime = document.createElement("span");
+          chatTime.classList.add("chat-time");
+          chatTime.textContent = new Date(chat.date).toLocaleString("ko");
+          chatItemBox.appendChild(chatTime);
+
+          const chatId = document.createElement("span");
+          chatId.classList.add("chat-id");
+          chatId.style.color = `rgb(${red}, ${green}, ${blue})`;
+          chatId.textContent = chat.id;
+          chatItemBox.appendChild(chatId);
+
+          const chatContent = document.createElement("span");
+          chatContent.classList.add("chat-content");
+          chatContent.textContent = chat.content;
+          chatItemBox.appendChild(chatContent);
+
+          chatLogBox.appendChild(chatItemBox);
+        });
+
+        const now = new Date().getTime();
+        chatLogBox.dataset.lastchat = now;
+        chatLogBox.style.opacity = 1;
+
+        setTimeout(function () {
+          const now = new Date().getTime();
+          if (now - chatLogBox.dataset.lastchat >= 10000) {
+            chatLogBox.style.opacity = 0;
+          }
+        }, 10100);
+      }
     });
   } catch {
     alert("Can't Connect Server");
@@ -216,6 +267,7 @@ function canvasResize() {
  * @typedef MetaverseWorld
  * @property { MetaverseMap | null } map
  * @property { MetaverseUser[] } users
+ * @property { MetaverseChat[] } chats
  * @property { MetaverseMe } me
  */
 
@@ -231,6 +283,14 @@ function canvasResize() {
  * @typedef MetaverseUser
  * @property { string } id
  * @property { number[] } position
+ */
+
+/**
+ * @typedef MetaverseChat
+ * @property { string } ip
+ * @property { string } id
+ * @property { string } content
+ * @property { number } date
  */
 
 /**

@@ -65,6 +65,14 @@ webSocketServer.on("connection", function (webSocket, request) {
           })
         );
 
+        // send chat log
+        webSocket.send(
+          JSON.stringify({
+            type: "SOCKET_SEND_TYPE_CHAT_LOG",
+            data: metaverseData.chats,
+          })
+        );
+
         isConnected = true;
 
         serverLog(`>>> #[${ip}] Join User`, id);
@@ -90,6 +98,32 @@ webSocketServer.on("connection", function (webSocket, request) {
     // ---------- [ MOVE ]
     if (data.type === "SOCKET_SEND_TYPE_MOVE") {
       if (isConnected) updateWebSocketUser(ip, id, data.data);
+    }
+
+    // ---------- [ MOVE ]
+    if (data.type === "SOCKET_SEND_TYPE_CHAT") {
+      if (isConnected) {
+        const chat = {
+          ip: ip,
+          id: id,
+          content: data.data,
+          date: new Date().getTime(),
+        };
+        serverLog(`>>> #[${ip}, ${id}] User Chat`, data.data);
+
+        // save chat log
+        metaverseData.chats.push(chat);
+
+        // send chat log
+        webSocketServer.clients.forEach(function (socket) {
+          socket.send(
+            JSON.stringify({
+              type: "SOCKET_SEND_TYPE_CHAT_LOG",
+              data: [chat],
+            })
+          );
+        });
+      }
     }
   });
 
