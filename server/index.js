@@ -8,7 +8,7 @@ import {
   updateWebSocketUser,
 } from "./socket.js";
 
-const port = 80;
+const port = 3000;
 function serverLog(...content) {
   console.log(`[${new Date().toLocaleString("ko")}]`, ...content);
 }
