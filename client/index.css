@@ -49,10 +49,7 @@ body {
   max-width: 40vw;
   height: 40vh;
   max-height: 40vh;
-  overflow: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
+  overflow-y: auto;
   opacity: 1;
   border-radius: 10px;
   transition: opacity 0.5s ease-in;

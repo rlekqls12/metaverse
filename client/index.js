@@ -194,6 +194,7 @@ async function initSocket() {
         const now = new Date().getTime();
         chatLogBox.dataset.lastchat = now;
         chatLogBox.style.opacity = 1;
+        chatLogBox.scrollTo(0, chatLogBox.scrollHeight);
 
         setTimeout(function () {
           const now = new Date().getTime();
