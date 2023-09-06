@@ -37,12 +37,6 @@ async function receiveOnceWebSocketMessage(webSocket) {
   return receiver;
 }
 
-async function loadMap(name) {
-  const mapResponse = await fetch(`/map/${name}`);
-  const map = await mapResponse.json();
-  return map;
-}
-
 /**
  * @param { WebSocket } webSocket
  */
@@ -68,4 +62,10 @@ async function joinServer(webSocket, id) {
   );
 
   return receiver;
+}
+
+async function loadMap(name) {
+  const mapResponse = await fetch(`/map/${name}`);
+  const map = await mapResponse.json();
+  return map;
 }
