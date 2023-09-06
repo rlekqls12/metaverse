@@ -130,7 +130,7 @@ webSocketServer.on("connection", function (webSocket, request) {
 
   // ------------------------------ [ CLOSE CONNECT ]
   webSocket.on("close", function () {
-    serverLog(`>>> #[${ip}] Leave User`);
+    serverLog(`>>> #[${ip}] Leave User`, id);
     joinedUser.ip = "";
     joinedUser.lastConnection = 0;
     clearInterval(connectCheckInterval);
