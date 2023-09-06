@@ -196,7 +196,7 @@ function drawCanvas() {
 
   if (isJoined) {
     drawMap();
-    onMove();
+    onKey();
   }
   requestAnimationFrame(drawCanvas);
 }
