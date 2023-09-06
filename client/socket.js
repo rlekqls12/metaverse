@@ -1,6 +1,7 @@
 async function createSocket() {
+  const protocol = location.protocol === "http:" ? "ws://" : "wss://";
   const host = location.host;
-  const webSocket = new WebSocket("ws://" + host);
+  const webSocket = new WebSocket(protocol + host);
 
   let resolver = () => void 0;
   const waitConnectSocket = new Promise(function (resolve) {
