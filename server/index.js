@@ -33,7 +33,8 @@ webSocketServer.on("connection", function (webSocket, request) {
       position: [0, 0],
       speed: 0,
       lastConnection: 0,
-    };
+    },
+    isConnected = false;
 
   serverLog(`>>> #[${ip}] Join Client`);
 
@@ -63,6 +64,8 @@ webSocketServer.on("connection", function (webSocket, request) {
           })
         );
 
+        isConnected = true;
+
         serverLog(`>>> #[${ip}] Join User`, id);
       } catch (error) {
         serverLog(`>>> #[${ip}] Close Socket`, error, id);
@@ -80,12 +83,12 @@ webSocketServer.on("connection", function (webSocket, request) {
 
     // ---------- [ STILL ALIVE ]
     if (data.type === "SOCKET_SEND_TYPE_SERVER_CHECK_RESPONSE") {
-      updateWebSocketUserTime(ip, id);
+      if (isConnected) updateWebSocketUserTime(ip, id);
     }
 
     // ---------- [ MOVE ]
     if (data.type === "SOCKET_SEND_TYPE_MOVE") {
-      updateWebSocketUser(ip, id, data.data);
+      if (isConnected) updateWebSocketUser(ip, id, data.data);
     }
   });
 
@@ -97,6 +100,7 @@ webSocketServer.on("connection", function (webSocket, request) {
   // ------------------------------ [ CHECK SERVER STATUS, INTERVAL 1000ms ]
   const connectCheckInterval = setInterval(function () {
     if (webSocket.readyState !== webSocket.OPEN) return;
+    if (isConnected === false) return;
 
     webSocket.send(JSON.stringify({ type: "SOCKET_SEND_TYPE_SERVER_CHECK" }));
   }, 1000);
@@ -104,6 +108,7 @@ webSocketServer.on("connection", function (webSocket, request) {
   // ------------------------------ [ SEND USER LIST, INTERVAL 10ms ]
   const sendUserListInterval = setInterval(function () {
     if (webSocket.readyState !== webSocket.OPEN) return;
+    if (isConnected === false) return;
 
     const now = new Date().getTime();
     const users = metaverseData.users
