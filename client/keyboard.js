@@ -84,6 +84,7 @@ function onChat() {
       chatBox.focus();
     } else {
       const content = chatBox.value;
+      if (content.replaceAll(" ", "").length === 0) return;
       chatBox.value = "";
       socket.send(
         JSON.stringify({

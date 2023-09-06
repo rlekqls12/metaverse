@@ -77,18 +77,45 @@ function drawUser(id, x, y) {
 
   // id
   context.textBaseline = "alphabetic";
+  context.textAlign = "center";
   context.fillStyle = "white";
   context.fillText(id, x, y - getFontSize());
 
   // chat
   const now = new Date().getTime();
-  const findRecentChat = world.chats.find(
-    (chat) => chat.id === id && now - chat.date <= 7000
-  );
+  const findRecentChat = world.chats
+    .sort((a, b) => b.date - a.date)
+    .find((chat) => chat.id === id && now - chat.date <= 7000);
   if (findRecentChat) {
     context.textBaseline = "bottom";
+    context.textAlign = "center";
     context.fillStyle = "white";
-    context.fillText(findRecentChat.content, x, y - getFontSize() * 2);
+
+    if (findRecentChat.content.includes("\n")) {
+      const chatLineList = findRecentChat.content.split("\n");
+      chatLineList.forEach(function (chat, chatIdx) {
+        drawText(
+          chat,
+          x,
+          y - getFontSize() * (chatLineList.length - chatIdx + 2),
+          200
+        );
+      });
+    } else {
+      drawText(findRecentChat.content, x, y - getFontSize() * 3, 200);
+    }
+  }
+}
+
+function drawText(text, x, y, maxWidth) {
+  if (maxWidth === 0) {
+    context.fillText(text, x, y);
+  } else {
+    while (context.measureText(text).width > maxWidth) {
+      text = text.split("...")[0];
+      text = text.slice(0, -1) + "...";
+    }
+    context.fillText(text, x, y);
   }
 }
 
