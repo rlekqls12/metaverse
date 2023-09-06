@@ -76,8 +76,20 @@ function drawUser(id, x, y) {
   context.closePath();
 
   // id
+  context.textBaseline = "alphabetic";
   context.fillStyle = "white";
   context.fillText(id, x, y - getFontSize());
+
+  // chat
+  const now = new Date().getTime();
+  const findRecentChat = world.chats.find(
+    (chat) => chat.id === id && now - chat.date <= 7000
+  );
+  if (findRecentChat) {
+    context.textBaseline = "bottom";
+    context.fillStyle = "white";
+    context.fillText(findRecentChat.content, x, y - getFontSize() * 2);
+  }
 }
 
 function getColor(id) {
@@ -91,6 +103,7 @@ function getColor(id) {
 
 function drawFps() {
   context.fillStyle = "white";
+  context.textBaseline = "alphabetic";
   context.textAlign = "end";
   setFontSize(16);
   context.fillText(fpsHz + " FPS", canvasWidth, getFontSize());
@@ -101,6 +114,7 @@ function drawPosition() {
   const positionText = `(${positionX}, ${positionY})`;
 
   context.fillStyle = "white";
+  context.textBaseline = "alphabetic";
   context.textAlign = "center";
   setFontSize(16);
   context.fillText(positionText, canvasWidth / 2, getFontSize());

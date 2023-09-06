@@ -166,9 +166,9 @@ async function initSocket() {
       if (data.type === "SOCKET_SEND_TYPE_CHAT_LOG") {
         world.chats.push(...data.data);
 
-        const [red, green, blue] = getColor(world.me.id);
         const chatLogBox = document.getElementById("chat-log");
         data.data.forEach(function (chat) {
+          const [red, green, blue] = getColor(chat.id);
           const chatItemBox = document.createElement("div");
           chatItemBox.classList.add("chat-item");
 
@@ -183,9 +183,9 @@ async function initSocket() {
           chatId.textContent = chat.id;
           chatItemBox.appendChild(chatId);
 
-          const chatContent = document.createElement("span");
+          const chatContent = document.createElement("div");
           chatContent.classList.add("chat-content");
-          chatContent.textContent = chat.content;
+          chatContent.innerHTML = chat.content.replaceAll("\n", "<br />");
           chatItemBox.appendChild(chatContent);
 
           chatLogBox.appendChild(chatItemBox);
@@ -197,10 +197,10 @@ async function initSocket() {
 
         setTimeout(function () {
           const now = new Date().getTime();
-          if (now - chatLogBox.dataset.lastchat >= 10000) {
+          if (now - chatLogBox.dataset.lastchat >= 7000) {
             chatLogBox.style.opacity = 0;
           }
-        }, 10100);
+        }, 7100);
       }
     });
   } catch {
