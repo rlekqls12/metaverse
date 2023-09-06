@@ -15,6 +15,8 @@ export function createServerApp() {
     response.setHeader("Access-Control-Allow-Origin", "*");
     response.setHeader("Access-Control-Allow-Methods", "GET");
     response.removeHeader("X-Powered-By");
+
+    console.log(`[${new Date().toLocaleString("ko")}]`, request.url);
     next();
   });
 
