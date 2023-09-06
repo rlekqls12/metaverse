@@ -5,6 +5,7 @@ import {
   pipeFile,
 } from "./file.js";
 import { metaverseData } from "./data.js";
+import { serverLog } from "./log.js";
 
 // create express server app
 export function createServerApp() {
@@ -16,7 +17,7 @@ export function createServerApp() {
     response.setHeader("Access-Control-Allow-Methods", "GET");
     response.removeHeader("X-Powered-By");
 
-    console.log(`[${new Date().toLocaleString("ko")}] API`, request.url);
+    serverLog(`>>> API`, request.url);
     next();
   });
 

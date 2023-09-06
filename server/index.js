@@ -1,6 +1,7 @@
 import { metaverseData } from "./data.js";
 import { createServerApp } from "./express.js";
 import { PUBLISH_CLIENT_DIRECTORY } from "./file.js";
+import { serverLog } from "./log.js";
 import {
   createWebSocketServer,
   joinWebSocketServer,
@@ -9,9 +10,6 @@ import {
 } from "./socket.js";
 
 const port = 3000;
-function serverLog(...content) {
-  console.log(`[${new Date().toLocaleString("ko")}]`, ...content);
-}
 
 // ---------------------------------------------------------------------- [ SERVER ]
 const app = createServerApp();
