@@ -16,7 +16,7 @@ function drawTile() {
   const [sizeX, sizeY] = size.map((v) => v / 2);
   const [positionX, positionY] = me.position.map((v) => v * tileSize);
 
-  context.fillStyle = "rgb(245, 222, 179)";
+  context.fillStyle = "rgb(100, 100, 100)";
   context.lineWidth = 2;
 
   for (let y = -sizeY; y < sizeY; y++) {
@@ -28,7 +28,7 @@ function drawTile() {
 
       const isWall = wall.find(([wx, wy]) => wx === nowX && wy === nowY);
       if (isWall) {
-        context.strokeStyle = "rgba(245, 222, 179, 1)";
+        context.strokeStyle = "rgba(100, 100, 100, 1)";
         context.fillRect(tileX, tileY, tileSize, tileSize);
       } else {
         context.strokeStyle = "rgba(255, 255, 255, 0.05)";
