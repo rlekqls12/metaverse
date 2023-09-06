@@ -23,7 +23,10 @@ export function createServerApp() {
   app.use(staticClientDirectory);
 
   // load map (can joined user)
-  app.get("/map/:mapId", function (request, response) {
+  app.get("/map/:mapId", async function (request, response) {
+    // wait 0.25 seconds
+    await new Promise((resolve) => setTimeout(resolve, 250));
+
     const ip = request.socket.remoteAddress;
     const isJoinedUser = metaverseData.users.some((user) => user.ip === ip);
 
