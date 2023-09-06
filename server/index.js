@@ -22,7 +22,10 @@ const server = app.listen(port, function () {
 const webSocketServer = createWebSocketServer({ server });
 webSocketServer.on("connection", function (webSocket, request) {
   // ------------------------------ [ CONNECT SERVER ]
-  const ip = request.headers["x-forwarded-for"] || request.socket.remoteAddress;
+  const ip =
+    request.socket.address().address ||
+    request.headers["x-forwarded-for"] ||
+    request.socket.remoteAddress;
   let id = "",
     joinedUser = {
       ip: "",

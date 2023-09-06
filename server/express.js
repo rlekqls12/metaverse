@@ -27,7 +27,10 @@ export function createServerApp() {
 
   // load map (can joined user)
   app.get("/map/:mapId", async function (request, response) {
-    const ip = request.socket.remoteAddress;
+    const ip =
+      request.socket.address().address ||
+      request.headers["x-forwarded-for"] ||
+      request.socket.remoteAddress;
     const isJoinedUser = metaverseData.users.some((user) => user.ip === ip);
     serverLog("MAP API", ip, metaverseData.users, isJoinedUser);
 
