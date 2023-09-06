@@ -10,6 +10,22 @@ export const PUBLISH_SERVER_DIRECTORY = BASE_DIRECTORY + "/server";
 export function pipeFile(response, fileDirectory) {
   const isExistFile = fs.existsSync(fileDirectory);
   if (isExistFile === false) {
+    console.log(
+      `[${new Date().toLocaleString("ko")}] File List /`,
+      fs.readdirSync(BASE_DIRECTORY)
+    );
+    console.log(
+      `[${new Date().toLocaleString("ko")}] File List /server`,
+      fs.readdirSync(PUBLISH_SERVER_DIRECTORY)
+    );
+    console.log(
+      `[${new Date().toLocaleString("ko")}] File List /server/map`,
+      fs.readdirSync(PUBLISH_SERVER_DIRECTORY + "/map")
+    );
+    console.log(
+      `[${new Date().toLocaleString("ko")}] File Empty`,
+      fileDirectory
+    );
     response.statusCode = 404;
     response.end();
     return;
