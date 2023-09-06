@@ -145,7 +145,8 @@ setInterval(function () {
   const clients = metaverseData.users
     .filter((user) => now.getTime() - user.lastConnection <= 60 * 1000)
     .map(
-      (user) => `${user.id}(${new Date(user.lastConnection).toISOString()})`
+      (user) =>
+        `${user.id}(${user.ip}, ${new Date(user.lastConnection).toISOString()})`
     );
   serverLog(`>>> # Joined Users`, clients);
 }, 5000);
