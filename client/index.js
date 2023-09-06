@@ -54,13 +54,16 @@ function init() {
   initForm();
 
   // TODO: DEBUG
-  if (DEBUG) {
-    const nicknameInput = document.getElementById("nickname");
-    nicknameInput.value = "tester";
-    const joinForm = document.getElementById("join");
-    const joinButton = joinForm.querySelector("button");
-    joinButton.click();
-  }
+  // if (DEBUG) {
+  //   const randomId = Array.from({ length: 4 }, () =>
+  //     Math.floor(Math.random() * 36).toString(36)
+  //   ).join("");
+  //   const nicknameInput = document.getElementById("nickname");
+  //   nicknameInput.value = "#" + randomId;
+  //   const joinForm = document.getElementById("join");
+  //   const joinButton = joinForm.querySelector("button");
+  //   joinButton.click();
+  // }
 
   requestAnimationFrame(drawCanvas);
 }
@@ -136,7 +139,18 @@ async function initSocket() {
         location.reload();
       }
 
-      // TODO: load user list
+      // load user list
+      if (data.type === "SOCKET_SEND_TYPE_USER_LIST") {
+        world.users = data.data || [];
+
+        // send my position
+        socket.send(
+          JSON.stringify({
+            type: "SOCKET_SEND_TYPE_MOVE",
+            data: world.me.position,
+          })
+        );
+      }
     });
   } catch {
     alert("Can't Connect Server");
@@ -161,10 +175,7 @@ function initCanvas() {
 }
 
 function drawCanvas() {
-  isNotFocusedWindow =
-    document.hidden ||
-    document.visibilityState === "hidden" ||
-    document.hasFocus() === false;
+  isNotFocusedWindow = document.hidden || document.visibilityState === "hidden";
 
   if (isNotFocusedWindow) {
     // if not focused, cant move

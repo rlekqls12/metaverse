@@ -38,7 +38,6 @@ function onMove() {
 
   // TODO: check cant move
 
-  sendMove(x, y);
   world.me.position[0] += x;
   world.me.position[1] += y;
 }

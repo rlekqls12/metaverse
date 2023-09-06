@@ -11,9 +11,9 @@ function drawTile() {
   const { map, me } = world;
   const { size, wall } = map;
 
+  const tileSize = getTileSize();
   const [halfX, halfY] = [canvasWidth, canvasHeight].map((v) => v / 2);
   const [sizeX, sizeY] = size.map((v) => v / 2);
-  const tileSize = Math.floor(Math.min(canvasWidth, canvasHeight) / 18);
   const [positionX, positionY] = me.position.map((v) => v * tileSize);
 
   context.fillStyle = "rgb(245, 222, 179)";
@@ -39,19 +39,48 @@ function drawTile() {
   }
 }
 
+function getTileSize() {
+  const tileSize = Math.floor(Math.min(canvasWidth, canvasHeight) / 18);
+  return tileSize;
+}
+
 function drawUsers() {
   const [centerX, centerY] = [canvasWidth, canvasHeight].map((v) => v / 2);
 
   // me
-  context.fillStyle = "red";
-  context.arc(centerX, centerY, 8, 0, Math.PI * 2, true);
+  drawUser(world.me.id, centerX, centerY);
+
+  const tileSize = getTileSize();
+  const [baseX, baseY] = world.me.position;
+
+  // other user
+  world.users.forEach(function (user) {
+    const [x, y] = user.position;
+    drawUser(
+      user.id,
+      centerX + (x - baseX) * tileSize,
+      centerY + (y - baseY) * tileSize
+    );
+  });
+}
+
+function drawUser(id, x, y) {
+  // color
+  const red =
+    id.split("").reduce((sum, word) => sum + word.charCodeAt() * 333, 0) % 255;
+  const green = (id.length * 33) % 255;
+  const blue = ((1 / red) * 1000) % 255;
+
+  // user
+  context.fillStyle = `rgb(${red}, ${green}, ${blue})`;
+  context.beginPath();
+  context.arc(x, y, 8, 0, Math.PI * 2, true);
   context.fill();
+  context.closePath();
 
   // id
   context.fillStyle = "white";
-  context.fillText(world.me.id, centerX, centerY - getFontSize());
-
-  // TODO: other user
+  context.fillText(id, x, y - getFontSize());
 }
 
 function drawFps() {

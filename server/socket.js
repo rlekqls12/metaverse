@@ -14,9 +14,16 @@ export function joinWebSocketServer(ip, data) {
 
   if (isAlreadyJoin) {
     const now = new Date();
-    if (joinedUser.ip !== ip && now - joinedUser.lastConnection <= 3000) {
+    if (
+      joinedUser.ip !== "" &&
+      joinedUser.ip !== ip &&
+      now - joinedUser.lastConnection <= 3000
+    ) {
       throw new Error("already join user");
     }
+
+    joinedUser.ip = ip;
+    joinedUser.lastConnection = new Date().getTime();
   } else {
     // create user
     metaverseData.users.push({
@@ -25,12 +32,14 @@ export function joinWebSocketServer(ip, data) {
       map: "init",
       position: [],
       speed: 0.1,
-      lastConnection: new Date(),
+      lastConnection: new Date().getTime(),
     });
   }
 
   // find user
-  joinedUser = metaverseData.users.find((user) => user.id === id);
+  joinedUser = metaverseData.users.find(
+    (user) => user.ip === ip && user.id === id
+  );
 
   // get map
   const map = getMap(joinedUser.map);
@@ -44,9 +53,16 @@ export function joinWebSocketServer(ip, data) {
   return joinedUser;
 }
 
-export function updateWebSocketUser(ip, id) {
+export function updateWebSocketUserTime(ip, id) {
   const joinedUser = metaverseData.users.find(
     (user) => user.ip === ip && user.id === id
   );
-  joinedUser.lastConnection = new Date();
+  joinedUser.lastConnection = new Date().getTime();
+}
+
+export function updateWebSocketUser(ip, id, position) {
+  const joinedUser = metaverseData.users.find(
+    (user) => user.ip === ip && user.id === id
+  );
+  joinedUser.position = position;
 }

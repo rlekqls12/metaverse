@@ -42,10 +42,6 @@ async function loadMap(name) {
   return map;
 }
 
-function sendMove(x, y) {
-  // TODO: sendMove
-}
-
 /**
  * @param { WebSocket } webSocket
  */
