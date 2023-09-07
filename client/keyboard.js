@@ -55,7 +55,23 @@ function onMove() {
     x += speed;
   }
 
-  // TODO: check cant move
+  // check cant move
+  const userHalfSize = 8 / getTileSize(); // canvas.js
+  const [userX, userY] = world.me.position;
+  const [nextX, nextY] = [userX + x, userY + y];
+  world.map.wall.forEach(([wallX, wallY]) => {
+    const leftHit =
+      Math.floor(nextX - userHalfSize) === wallX && Math.floor(nextY) === wallY;
+    const rightHit =
+      Math.floor(nextX + userHalfSize) === wallX && Math.floor(nextY) === wallY;
+    const upHit =
+      Math.floor(nextX) === wallX && Math.floor(nextY - userHalfSize) === wallY;
+    const downHit =
+      Math.floor(nextX) === wallX && Math.floor(nextY + userHalfSize) === wallY;
+
+    if (leftHit || rightHit) x = 0;
+    if (upHit || downHit) y = 0;
+  });
 
   world.me.position[0] += x;
   world.me.position[1] += y;
