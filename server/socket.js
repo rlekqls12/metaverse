@@ -14,6 +14,7 @@ export function joinWebSocketServer(ip, data) {
 
   if (isAlreadyJoin) {
     const now = new Date().getTime();
+    console.log(id, ip, joinedUser);
     if (
       id === "SERVER" ||
       (joinedUser.ip !== "" &&
