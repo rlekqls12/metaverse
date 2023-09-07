@@ -78,8 +78,8 @@ function drawUser(id, x, y) {
   // id
   context.textBaseline = "alphabetic";
   context.textAlign = "center";
-  context.fillStyle = "white";
-  context.fillText(id, x, y - getFontSize());
+  context.fillStyle = "lightgray";
+  context.fillText(id, x, y + getFontSize() * 1.75);
 
   // chat
   const now = new Date().getTime();
@@ -97,12 +97,12 @@ function drawUser(id, x, y) {
         drawText(
           chat,
           x,
-          y - getFontSize() * (chatLineList.length - chatIdx + 2),
+          y - getFontSize() * (chatLineList.length - chatIdx + 0.5),
           200
         );
       });
     } else {
-      drawText(findRecentChat.content, x, y - getFontSize() * 3, 200);
+      drawText(findRecentChat.content, x, y - getFontSize() * 1.5, 200);
     }
   }
 }
