@@ -74,9 +74,12 @@ function onChat() {
     return;
   }
 
+  const now = new Date().getTime();
+  const lastPushShiftKey = keysTimeline.shift;
   if (
     keyList.includes("enter") &&
     keyList.includes("shift") === false &&
+    now - lastPushShiftKey > 500 &&
     chatBox.dataset.open === "0"
   ) {
     chatBox.dataset.open = "1";
