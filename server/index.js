@@ -7,6 +7,8 @@ import {
   joinWebSocketServer,
   updateWebSocketUserTime,
   updateWebSocketUser,
+  sendChat,
+  sendChatEveryone,
 } from "./socket.js";
 
 const port = 3000;
@@ -66,14 +68,18 @@ webSocketServer.on("connection", function (webSocket, request) {
         );
 
         // send chat log
-        webSocket.send(
-          JSON.stringify({
-            type: "SOCKET_SEND_TYPE_CHAT_LOG",
-            data: metaverseData.chats,
-          })
-        );
+        sendChat(webSocket, metaverseData.chats);
 
         isConnected = true;
+
+        sendChatEveryone(webSocketServer.clients, [
+          {
+            ip: "",
+            id: "SERVER",
+            content: `${id}님이 접속하셨습니다.`,
+            date: new Date().getTime(),
+          },
+        ]);
 
         serverLog(`>>> #[${ip}] Join User`, id);
       } catch (error) {
@@ -115,14 +121,7 @@ webSocketServer.on("connection", function (webSocket, request) {
         metaverseData.chats.push(chat);
 
         // send chat log
-        webSocketServer.clients.forEach(function (socket) {
-          socket.send(
-            JSON.stringify({
-              type: "SOCKET_SEND_TYPE_CHAT_LOG",
-              data: [chat],
-            })
-          );
-        });
+        sendChatEveryone(webSocketServer.clients, [chat]);
       }
     }
   });
@@ -165,6 +164,15 @@ webSocketServer.on("connection", function (webSocket, request) {
 
   // ------------------------------ [ CLOSE CONNECT ]
   webSocket.on("close", function () {
+    sendChatEveryone(webSocketServer.clients, [
+      {
+        ip: "",
+        id: "SERVER",
+        content: `${id}님이 퇴장하셨습니다.`,
+        date: new Date().getTime(),
+      },
+    ]);
+
     serverLog(`>>> #[${ip}] Leave User`, id);
     joinedUser.ip = "";
     joinedUser.lastConnection = 0;

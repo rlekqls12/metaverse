@@ -66,3 +66,20 @@ export function updateWebSocketUser(ip, id, position) {
   );
   joinedUser.position = position;
 }
+
+export function sendChatEveryone(clients, chat) {
+  // send chat log
+  clients.forEach(function (socket) {
+    sendChat(socket, chat);
+  });
+}
+
+export function sendChat(socket, chat) {
+  // send chat log
+  socket.send(
+    JSON.stringify({
+      type: "SOCKET_SEND_TYPE_CHAT_LOG",
+      data: chat,
+    })
+  );
+}
