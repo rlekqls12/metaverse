@@ -75,7 +75,7 @@ function onChat() {
   }
 
   const now = new Date().getTime();
-  const lastPushShiftKey = keysTimeline.shift;
+  const lastPushShiftKey = keysTimeline.shift || 0;
   if (
     keyList.includes("enter") &&
     keyList.includes("shift") === false &&
