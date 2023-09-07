@@ -72,14 +72,14 @@ webSocketServer.on("connection", function (webSocket, request) {
 
         isConnected = true;
 
-        sendChatEveryone(webSocketServer.clients, [
-          {
-            ip: "",
-            id: "SERVER",
-            content: `${id}님이 접속하셨습니다.`,
-            date: new Date().getTime(),
-          },
-        ]);
+        const joinChat = {
+          ip: "",
+          id: "SERVER",
+          content: `${id}님이 접속하셨습니다.`,
+          date: new Date().getTime(),
+        };
+        metaverseData.chats.push(joinChat);
+        sendChatEveryone(webSocketServer.clients, [joinChat]);
 
         serverLog(`>>> #[${ip}] Join User`, id);
       } catch (error) {
@@ -164,14 +164,14 @@ webSocketServer.on("connection", function (webSocket, request) {
 
   // ------------------------------ [ CLOSE CONNECT ]
   webSocket.on("close", function () {
-    sendChatEveryone(webSocketServer.clients, [
-      {
-        ip: "",
-        id: "SERVER",
-        content: `${id}님이 퇴장하셨습니다.`,
-        date: new Date().getTime(),
-      },
-    ]);
+    const leaveChat = {
+      ip: "",
+      id: "SERVER",
+      content: `${id}님이 퇴장하셨습니다.`,
+      date: new Date().getTime(),
+    };
+    metaverseData.chats.push(leaveChat);
+    sendChatEveryone(webSocketServer.clients, [leaveChat]);
 
     serverLog(`>>> #[${ip}] Leave User`, id);
     joinedUser.ip = "";
