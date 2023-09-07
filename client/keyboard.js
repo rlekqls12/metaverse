@@ -1,10 +1,12 @@
 const keys = {};
+const keysTimeline = {};
 
 function onKeyChange(event) {
   const key = event.key.toLowerCase();
 
   if (event.type === "keydown") {
     keys[key] = true;
+    keysTimeline[key] = new Date().getTime();
   }
   if (event.type === "keyup") {
     delete keys[key];
@@ -84,8 +86,9 @@ function onChat() {
       chatBox.focus();
     } else {
       const content = chatBox.value;
-      if (content.replaceAll(" ", "").length === 0) return;
       chatBox.value = "";
+      if (content.replaceAll(" ", "").replaceAll("\n", "").length === 0) return;
+
       socket.send(
         JSON.stringify({
           type: "SOCKET_SEND_TYPE_CHAT",
