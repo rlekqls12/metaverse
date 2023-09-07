@@ -15,9 +15,10 @@ export function joinWebSocketServer(ip, data) {
   if (isAlreadyJoin) {
     const now = new Date().getTime();
     if (
-      joinedUser.ip !== "" &&
-      joinedUser.ip !== ip &&
-      now - joinedUser.lastConnection <= 3000
+      id === "SERVER" ||
+      (joinedUser.ip !== "" &&
+        joinedUser.ip !== ip &&
+        now - joinedUser.lastConnection <= 1500)
     ) {
       throw new Error("already join user");
     }
