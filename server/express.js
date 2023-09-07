@@ -21,9 +21,17 @@ export function createServerApp() {
     next();
   });
 
-  // publish client folder
-  const staticClientDirectory = express.static(PUBLISH_CLIENT_DIRECTORY);
-  app.use(staticClientDirectory);
+  // publish client index folder
+  const staticClientIndexDirectory = express.static(
+    PUBLISH_CLIENT_DIRECTORY + "/index"
+  );
+  app.use("/", staticClientIndexDirectory);
+
+  // publish client map folder
+  const staticClientMapDirectory = express.static(
+    PUBLISH_CLIENT_DIRECTORY + "/map"
+  );
+  app.use("/map", staticClientMapDirectory);
 
   // load map (can joined user)
   app.get("/map/:mapId", async function (request, response) {
