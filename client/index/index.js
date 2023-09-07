@@ -4,10 +4,6 @@ let canvas = null;
 let canvasWidth = 0;
 let canvasHeight = 0;
 
-// calculate fps
-let renderLogs = [];
-let fpsHz = 0;
-
 /** @type { CanvasRenderingContext2D | null } */
 let context = null;
 
@@ -26,6 +22,10 @@ const world = {
     speed: 0.1,
   },
 };
+
+// calculate fps
+let renderLogs = [];
+let fpsHz = 0;
 
 // join
 let isJoined = false;
