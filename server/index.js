@@ -152,11 +152,11 @@ webSocketServer.on("connection", function (webSocket, request) {
           user.id !== joinedUser.id &&
           now - user.lastConnection <= 60 * 1000
       )
+      .sort((a, b) => b.lastConnection - a.lastConnection)
       .map((user) => ({
         id: user.id,
         position: user.position,
       }));
-    users.push(...users);
 
     webSocket.send(
       JSON.stringify({
