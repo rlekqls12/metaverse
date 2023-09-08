@@ -46,11 +46,12 @@ body {
   left: 10px;
   bottom: 10px;
   width: 40vw;
-  max-width: 40vw;
+  min-width: 550px;
+  max-width: 768px;
   max-height: 40vh;
   overflow-y: auto;
   opacity: 1;
-  border-radius: 10px;
+  border-radius: 4px;
   transition: opacity 0.5s ease-in;
 }
 
@@ -63,12 +64,12 @@ body {
   padding: 5px;
   display: flex;
   gap: 10px;
-  background-color: rgba(255, 255, 255, 0.35);
+  background-color: rgba(255, 255, 255, 0.5);
 }
 
 .chat-time {
   flex: 5;
-  color: lightgray;
+  color: black;
   white-space: nowrap;
 }
 
@@ -79,7 +80,7 @@ body {
 
 .chat-content {
   flex: 8;
-  color: lightgray;
+  color: black;
   word-wrap: break-word;
   word-break: break-all;
 }
@@ -88,22 +89,21 @@ body {
   position: fixed;
   left: 10px;
   top: 20%;
-  width: 8vw;
-  max-width: 8vw;
+  width: 165px;
   min-height: 60px;
-  max-height: 40vh;
+  max-height: 240px;
   overflow-y: auto;
   display: none;
-  padding: 10px;
-  border-radius: 10px;
+  padding: 5px;
+  border-radius: 4px;
   color: lightgray;
-  transform: translate(0, -50%);
   background-color: rgba(255, 255, 255, 0.35);
 }
 
 #user-list > div {
   display: flex;
   flex-direction: row;
+  margin-bottom: 4px;
 }
 
 #user-list > div > span:first-child {

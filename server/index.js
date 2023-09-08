@@ -156,9 +156,13 @@ webSocketServer.on("connection", function (webSocket, request) {
         id: user.id,
         position: user.position,
       }));
+    users.push(...users);
 
     webSocket.send(
-      JSON.stringify({ type: "SOCKET_SEND_TYPE_USER_LIST", data: users })
+      JSON.stringify({
+        type: "SOCKET_SEND_TYPE_USER_LIST",
+        data: users,
+      })
     );
   }, 10);
 

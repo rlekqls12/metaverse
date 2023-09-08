@@ -52,6 +52,7 @@ function init() {
       event.target.value = text.slice(0, 8);
     }
   });
+  nicknameInput.focus();
 
   // chat content max length is 180
   const chatBox = document.getElementById("chat");
@@ -262,21 +263,25 @@ function drawCanvas() {
 
       const userItemList = [];
       [world.me, ...world.users].forEach(function (user) {
-        const userItemBox = document.createElement("div");
-
         const [red, green, blue] = getColor(user.id);
+
+        const userItemBox = document.createElement("div");
+        userItemBox.style.backgroundColor = `rgb(${red}, ${green}, ${blue})`;
+        userItemBox.style.padding = "2px 5px";
+        userItemBox.style.borderRadius = "4px";
+
         const userId = document.createElement("span");
         userId.textContent = user.id;
-        userId.style.color = `rgb(${red}, ${green}, ${blue})`;
-        userId.style.backgroundColor = `rgba(${255 - red}, ${255 - green}, ${
-          255 - blue
-        }, 0.35)`;
+        userId.style.color = `rgb(${255 - red}, ${255 - green}, ${255 - blue})`;
         userItemBox.appendChild(userId);
 
         const userPosition = document.createElement("span");
         userPosition.textContent = `(${user.position
           .map(Math.floor)
           .join(", ")})`;
+        userPosition.style.color = `rgb(${255 - red}, ${255 - green}, ${
+          255 - blue
+        })`;
         userItemBox.appendChild(userPosition);
 
         userItemList.push(userItemBox);
