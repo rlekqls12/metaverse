@@ -106,7 +106,7 @@ function initForm() {
           window.addEventListener("keyup", onKeyChange);
           window.addEventListener("keydown", onKeyChange);
           isJoined = true;
-          joinedTime = new Date().getTime()
+          joinedTime = new Date().getTime();
         })
         .catch(function (reason) {
           // failed
@@ -251,6 +251,33 @@ function drawCanvas() {
   if (isJoined) {
     drawMap();
     onKey();
+
+    const userList = document.getElementById("user-list");
+    const nowTime = new Date().getTime();
+    const isNeedUpdate = nowTime - userList.dataset.lastupdate > 1500;
+    if (userList.checkVisibility() && isNeedUpdate) {
+      userList.dataset.lastupdate = nowTime;
+      userList.replaceChildren();
+
+      const userItemList = [];
+      [world.me, ...world.users].forEach(function (user) {
+        const userItemBox = document.createElement("div");
+
+        const userId = document.createElement("span");
+        userId.textContent = user.id;
+        userItemBox.appendChild(userId);
+
+        const userPosition = document.createElement("span");
+        userPosition.textContent = `(${user.position
+          .map(Math.floor)
+          .join(", ")})`;
+        userItemBox.appendChild(userPosition);
+
+        userItemList.push(userItemBox);
+      });
+
+      userList.append(...userItemList);
+    }
   }
   requestAnimationFrame(drawCanvas);
 }

@@ -16,6 +16,10 @@ function onKeyChange(event) {
       chatBox.dataset.open = "0";
     }
   }
+
+  if (["tab"].includes(key)) {
+    event.preventDefault();
+  }
 }
 
 function clearKeys() {
@@ -27,6 +31,7 @@ function clearKeys() {
 function onKey() {
   onMove();
   onChat();
+  onUserList();
 }
 
 function onMove() {
@@ -115,5 +120,18 @@ function onChat() {
         })
       );
     }
+  }
+}
+
+function onUserList() {
+  if (isJoined === false) return;
+
+  const keyList = Object.keys(keys);
+  if (keyList.includes("tab")) {
+    const userList = document.getElementById("user-list");
+    userList.style.display = "block";
+  } else {
+    const userList = document.getElementById("user-list");
+    userList.style.display = "";
   }
 }
