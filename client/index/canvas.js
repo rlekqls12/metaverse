@@ -161,7 +161,7 @@ function getFontSize() {
 
 function drawHelper() {
   const now = new Date().getTime();
-  if (now - joinedTime > 3000) return;
+  if (now - joinedTime > 6000) return;
 
   const [centerX, centerY] = [canvasWidth, canvasHeight].map((v) => v / 2);
   const backPlateSize = { width: 150, height: 80 };
