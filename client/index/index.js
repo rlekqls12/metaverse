@@ -29,6 +29,7 @@ let fpsHz = 0;
 
 // join
 let isJoined = false;
+let joinedTime = 0;
 
 // window is not focused
 let isNotFocusedWindow = false;
@@ -105,6 +106,7 @@ function initForm() {
           window.addEventListener("keyup", onKeyChange);
           window.addEventListener("keydown", onKeyChange);
           isJoined = true;
+          joinedTime = new Date().getTime()
         })
         .catch(function (reason) {
           // failed

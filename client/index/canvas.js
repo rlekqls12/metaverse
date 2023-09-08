@@ -5,6 +5,7 @@ function drawMap() {
   drawUsers();
   drawFps();
   drawPosition();
+  drawHelper();
 }
 
 function drawTile() {
@@ -156,4 +157,63 @@ function setFontSize(size) {
 
 function getFontSize() {
   return parseInt(context.font);
+}
+
+function drawHelper() {
+  const now = new Date().getTime();
+  if (now - joinedTime > 3000) return;
+
+  const [centerX, centerY] = [canvasWidth, canvasHeight].map((v) => v / 2);
+  const backPlateSize = { width: 150, height: 80 };
+  const [baseX, baseY] = [
+    centerX - backPlateSize.width / 2,
+    centerY - backPlateSize.height * 1.5,
+  ];
+
+  // backplate
+  context.fillStyle = "rgb(75, 75, 75)";
+  context.strokeStyle = "rgb(105, 105, 105)";
+  context.fillRect(baseX, baseY, backPlateSize.width, backPlateSize.height);
+  context.strokeRect(baseX, baseY, backPlateSize.width, backPlateSize.height);
+
+  // text
+  const fontSize = getFontSize();
+  context.textAlign = "center";
+  context.textBaseline = "middle";
+
+  // text - chat
+  context.fillStyle = "rgb(125, 200, 200)";
+  context.fillText(
+    "Help",
+    centerX,
+    centerY - backPlateSize.height - fontSize * 2.5
+  );
+
+  // text - chat
+  context.fillStyle = "lightgray";
+  context.fillText(
+    "Chat",
+    centerX - 25,
+    centerY - backPlateSize.height - fontSize * 1
+  );
+  context.fillStyle = "rgb(125, 200, 125)";
+  context.fillText(
+    "Enter",
+    centerX + 35,
+    centerY - backPlateSize.height - fontSize * 1
+  );
+
+  // text - user list
+  context.fillStyle = "lightgray";
+  context.fillText(
+    "User List",
+    centerX - 25,
+    centerY - backPlateSize.height + fontSize * 1
+  );
+  context.fillStyle = "rgb(125, 200, 125)";
+  context.fillText(
+    "Tab",
+    centerX + 35,
+    centerY - backPlateSize.height + fontSize * 1
+  );
 }
