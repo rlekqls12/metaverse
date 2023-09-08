@@ -252,6 +252,7 @@ function drawCanvas() {
     drawMap();
     onKey();
 
+    // user list box
     const userList = document.getElementById("user-list");
     const nowTime = new Date().getTime();
     const isNeedUpdate = nowTime - userList.dataset.lastupdate > 1500;
@@ -263,8 +264,10 @@ function drawCanvas() {
       [world.me, ...world.users].forEach(function (user) {
         const userItemBox = document.createElement("div");
 
+        const [red, green, blue] = getColor(user.id);
         const userId = document.createElement("span");
         userId.textContent = user.id;
+        userId.style.color = `rgb(${red}, ${green}, ${blue})`;
         userItemBox.appendChild(userId);
 
         const userPosition = document.createElement("span");
