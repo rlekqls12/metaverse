@@ -41,8 +41,12 @@ function drawTile() {
 }
 
 function getTileSize() {
-  const tileSize = Math.floor(Math.min(canvasWidth, canvasHeight) / 18);
+  const tileSize = Math.floor(Math.min(canvasWidth, canvasHeight) / 28);
   return tileSize;
+}
+
+function getUserHalfSize() {
+  return (getTileSize() / 2) * 0.75;
 }
 
 function drawUsers() {
@@ -70,9 +74,10 @@ function drawUser(id, x, y) {
   const [red, green, blue] = getColor(id);
 
   // user
+  const userSize = getUserHalfSize();
   context.fillStyle = `rgb(${red}, ${green}, ${blue})`;
   context.beginPath();
-  context.arc(x, y, 8, 0, Math.PI * 2, true);
+  context.arc(x, y, userSize, 0, Math.PI * 2, true);
   context.fill();
   context.closePath();
 
