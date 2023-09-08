@@ -268,6 +268,9 @@ function drawCanvas() {
         const userId = document.createElement("span");
         userId.textContent = user.id;
         userId.style.color = `rgb(${red}, ${green}, ${blue})`;
+        userId.style.backgroundColor = `rgba(${255 - red}, ${255 - green}, ${
+          255 - blue
+        }, 0.35)`;
         userItemBox.appendChild(userId);
 
         const userPosition = document.createElement("span");
