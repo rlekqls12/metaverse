@@ -52,9 +52,6 @@ function getUserHalfSize() {
 function drawUsers() {
   const [centerX, centerY] = [canvasWidth, canvasHeight].map((v) => v / 2);
 
-  // me
-  drawUser(world.me.id, centerX, centerY);
-
   const tileSize = getTileSize();
   const [baseX, baseY] = world.me.position;
 
@@ -67,6 +64,9 @@ function drawUsers() {
       centerY + (y - baseY) * tileSize
     );
   });
+
+  // me
+  drawUser(world.me.id, centerX, centerY);
 }
 
 function drawUser(id, x, y) {
