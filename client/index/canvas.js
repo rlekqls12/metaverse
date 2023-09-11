@@ -29,7 +29,7 @@ function drawTile() {
 
       const isWall = wall.find(([wx, wy]) => wx === nowX && wy === nowY);
       if (isWall) {
-        context.strokeStyle = "rgba(100, 100, 100, 1)";
+        context.strokeStyle = "rgb(100, 100, 100)";
         context.fillRect(tileX, tileY, tileSize, tileSize);
       } else {
         context.strokeStyle = "rgba(255, 255, 255, 0.05)";

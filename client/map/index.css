@@ -1,0 +1,75 @@
+body {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  background-color: black;
+  overflow: hidden;
+}
+
+#cvs {
+  width: 100%;
+  height: 100%;
+  background-color: rgb(50, 50, 50);
+}
+
+#map-info {
+  position: absolute;
+  top: 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 18px;
+  width: 100%;
+  max-height: 200px;
+  padding: 12px;
+  border: 2px solid rgb(103, 103, 103);
+  border-radius: 4px;
+  box-sizing: border-box;
+  background-color: rgb(73, 73, 73);
+}
+
+.map-item {
+  display: flex;
+  justify-content: space-around;
+  width: 154px;
+  height: 24px;
+}
+
+#map-info.hide {
+  max-height: 0px;
+  padding: 0px;
+  border-width: 0px;
+}
+
+#map-info.hide > .map-item {
+  display: none;
+}
+
+.map-item > label {
+  color: lightgray;
+}
+
+.map-item > input,
+.map-item > select,
+.map-item > button {
+  width: 64px;
+}
+
+#map-toggle {
+  cursor: pointer;
+  position: absolute;
+  bottom: 0;
+  left: 4%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 24px;
+  border: 2px solid rgb(103, 103, 103);
+  border-top-width: 0;
+  border-radius: 0 0 4px 4px;
+  color: lightgray;
+  font-weight: bold;
+  background-color: rgb(73, 73, 73);
+  transform: translateY(100%);
+}

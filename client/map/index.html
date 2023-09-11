@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Metaverse Map</title>
+    <link rel="stylesheet" href="./index.css" />
   </head>
   <body>
     <!-- TODO: Map Size Input -->
@@ -11,6 +12,33 @@
     <!-- TODO: Map Tile Type Toggle Button (Tile, Wall) -->
     <canvas id="cvs"></canvas>
 
+    <div id="map-info">
+      <div class="map-item">
+        <label for="input-width">Width</label>
+        <input id="input-width" value="15" />
+      </div>
+      <div class="map-item">
+        <label for="input-height">Height</label>
+        <input id="input-height" value="15" />
+      </div>
+      <div class="map-item">
+        <label for="select-start">Start</label>
+        <select id="select-start"></select>
+      </div>
+      <div class="map-item">
+        <label for="select-wall">Wall</label>
+        <select id="select-wall"></select>
+      </div>
+      <div class="map-item">
+        <label for="button-block-type">Block Type</label>
+        <button id="button-block-type">Start</button>
+      </div>
+      <div id="map-toggle">〓</div>
+    </div>
+
+    <script src="./canvas.js"></script>
+    <script src="./keyboard.js"></script>
+    <script src="./mouse.js"></script>
     <script src="./index.js"></script>
   </body>
 </html>
