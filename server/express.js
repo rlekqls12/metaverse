@@ -34,7 +34,7 @@ export function createServerApp() {
   app.use("/map", staticClientMapDirectory);
 
   // load map (can joined user)
-  app.get("/map/:mapId", async function (request, response) {
+  app.get("/map/list/:mapId", async function (request, response) {
     const ip =
       request.socket.address().address ||
       request.headers["x-forwarded-for"] ||

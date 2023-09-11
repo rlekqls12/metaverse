@@ -65,7 +65,7 @@ async function joinServer(webSocket, id) {
 }
 
 async function loadMap(name) {
-  const mapResponse = await fetch(`/map/${name}`);
+  const mapResponse = await fetch(`/map/list/${name}`);
   const map = await mapResponse.json();
   return map;
 }
