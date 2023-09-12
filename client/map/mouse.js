@@ -1,5 +1,6 @@
 let mouseMatrix = [0, 0];
 let isMouseDown = false;
+let mouseEffectList = [];
 
 function initMouse() {
   window.addEventListener("mousemove", onMouseEvent);
@@ -12,6 +13,9 @@ function onMouseEvent(event) {
 
   const type = event.type; // mousemove, mousedown, mouseup
   if (["mousedown", "mouseup"].includes(type)) {
+    if (type === "mouseup") {
+      mouseEffectList = [];
+    }
     isMouseDown = type === "mousedown";
   }
 }

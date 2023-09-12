@@ -9,7 +9,7 @@ function drawMap() {
 
 function drawTile() {
   const { map, me } = world;
-  const { size, wall } = map;
+  const { size, wall, start } = map;
 
   const tileSize = getTileSize();
   const [halfX, halfY] = [canvasWidth, canvasHeight].map((v) => v / 2);
@@ -32,19 +32,47 @@ function drawTile() {
         (positionY + mouseMatrix[1] - halfY) / tileSize
       );
 
+      const wallIndex = wall.findIndex(
+        ([wx, wy]) => wx === nowX && wy === nowY
+      );
+      const startIndex = start.findIndex(
+        ([sx, sy]) => sx === nowX && sy === nowY
+      );
+
       if (nowX === mouseX && nowY === mouseY) {
         cursor = "pointer";
         context.fillStyle = "rgb(100, 175, 100)";
+        context.strokeStyle = "rgb(100, 175, 100)";
         context.fillRect(tileX, tileY, tileSize, tileSize);
+
+        if (isMouseDown) {
+          const isEffected = mouseEffectList.find(
+            (effect) => effect[0] === nowX && effect[1] === nowY
+          );
+
+          if (Boolean(isEffected) === false) {
+            const now = [nowX, nowY];
+            mouseEffectList.push(now);
+
+            if (wallIndex !== -1) wall.splice(wallIndex, 1);
+            else if (blockType === "Wall") wall.push(now);
+            if (startIndex !== -1) start.splice(startIndex, 1);
+            else if (blockType === "Start") start.push(now);
+          }
+        }
       } else {
         context.fillStyle = "rgb(100, 100, 100)";
+        context.strokeStyle = "rgba(255, 255, 255, 0.2)";
 
-        const isWall = wall.find(([wx, wy]) => wx === nowX && wy === nowY);
-        if (isWall) {
+        if (wallIndex !== -1) {
           context.strokeStyle = "rgb(100, 100, 100)";
           context.fillRect(tileX, tileY, tileSize, tileSize);
         } else {
-          context.strokeStyle = "rgba(255, 255, 255, 0.05)";
+          if (startIndex !== -1) {
+            context.fillStyle = "rgb(100, 150, 175)";
+            context.strokeStyle = "rgb(100, 150, 175)";
+            context.fillRect(tileX, tileY, tileSize, tileSize);
+          }
         }
       }
 
