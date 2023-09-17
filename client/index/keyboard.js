@@ -68,7 +68,7 @@ function onMove() {
   const userSize = getUserHalfSize();
   const tileSize = getTileSize();
   const userHalfSize = userSize / tileSize;
-  const [userX, userY] = world.me.position;
+  const [userX, userY] = world.me.position.map((position) => position + 0.5); // 0.5 is tile correction
   const [nextX, nextY] = [userX + x, userY + y];
   world.map.wall.forEach(([wallX, wallY]) => {
     const leftHit =

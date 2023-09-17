@@ -25,8 +25,8 @@ function drawTile() {
     for (let x = -sizeX; x < sizeX; x++) {
       const nowX = x + sizeX;
       const nowY = y + sizeY;
-      const tileX = -positionX + halfX + nowX * tileSize;
-      const tileY = -positionY + halfY + nowY * tileSize;
+      const tileX = -positionX + halfX + nowX * tileSize - tileSize * 0.5; // tileSize * 0.5 is tile correction
+      const tileY = -positionY + halfY + nowY * tileSize - tileSize * 0.5; // tileSize * 0.5 is tile correction
 
       const isWall = wall.find(([wx, wy]) => wx === nowX && wy === nowY);
       if (isWall) {
