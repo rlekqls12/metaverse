@@ -9,6 +9,7 @@ import {
   updateWebSocketUser,
   sendChat,
   sendChatEveryone,
+  initPosition,
 } from "./socket.js";
 
 const port = 3000;
@@ -127,6 +128,57 @@ webSocketServer.on("connection", function (webSocket, request) {
         // send chat log
         sendChatEveryone(webSocketServer.clients, [chat]);
       }
+    }
+
+    // ---------- [ CHANGE MAP ]
+    if (data.type === "SOCKET_SEND_CHANGE_MAP") {
+      // change map log
+      serverLog(
+        `>>> #[${ip}] Change Map User`,
+        id,
+        `${joinedUser.map} to ${data.map}`
+      );
+
+      // leave origin map chat
+      const leaveChat = {
+        ip: "",
+        id: "SERVER",
+        content: `${id}님이 퇴장하셨습니다.`,
+        date: new Date().getTime(),
+      };
+      metaverseData.chats[joinedUser.map].push(leaveChat);
+      sendChatEveryone(webSocketServer.clients, [leaveChat]);
+
+      // change map
+      joinedUser.map = data.map;
+
+      // change init position
+      joinedUser.position = [];
+      initPosition(ip, id);
+
+      webSocket.send(
+        JSON.stringify({
+          type: "SOCKET_SEND_CHANGE_MAP_RESPONSE",
+          position: joinedUser.position,
+        })
+      );
+
+      // init map chat list
+      if (Array.isArray(metaverseData.chats[joinedUser.map]) === false) {
+        metaverseData.chats[joinedUser.map] = [];
+      }
+
+      // send chat log
+      sendChat(webSocket, metaverseData.chats[joinedUser.map]);
+
+      const joinChat = {
+        ip: "",
+        id: "SERVER",
+        content: `${id}님이 접속하셨습니다.`,
+        date: new Date().getTime(),
+      };
+      metaverseData.chats[joinedUser.map].push(joinChat);
+      sendChatEveryone(webSocketServer.clients, [joinChat]);
     }
   });
 

@@ -32,14 +32,18 @@ function onKey() {
   onMove();
   onChat();
   onUserList();
+  onChangeMap();
+}
+
+function isOpenChatBox() {
+  const chatBox = document.getElementById("chat");
+  const isChatBoxShow = getComputedStyle(chatBox).display !== "none";
+  return isChatBoxShow;
 }
 
 function onMove() {
   if (isJoined === false) return;
-
-  const chatBox = document.getElementById("chat");
-  const isChatBoxShow = getComputedStyle(chatBox).display !== "none";
-  if (isChatBoxShow) return;
+  if (isOpenChatBox()) return;
 
   const keyList = Object.keys(keys);
 
@@ -127,6 +131,7 @@ function onChat() {
 
 function onUserList() {
   if (isJoined === false) return;
+  if (isOpenChatBox()) return;
 
   const keyList = Object.keys(keys);
   if (keyList.includes("tab")) {
@@ -135,5 +140,19 @@ function onUserList() {
   } else {
     const userList = document.getElementById("user-list");
     userList.style.display = "";
+  }
+}
+
+function onChangeMap() {
+  if (isJoined === false) return;
+  if (isOpenChatBox()) return;
+
+  const keyList = Object.keys(keys);
+  if (keyList.includes("m")) {
+    delete keys.m;
+
+    const mapId = prompt("input other map id");
+    if (mapId === null || mapId.trim() === "") return;
+    changeMap(mapId);
   }
 }

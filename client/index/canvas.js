@@ -5,6 +5,7 @@ function drawMap() {
   drawUsers();
   drawFps();
   drawPosition();
+  drawMapId();
   drawHelper();
 }
 
@@ -179,7 +180,7 @@ function drawHelper() {
   if (now - joinedTime > 6000) return;
 
   const [centerX, centerY] = [canvasWidth, canvasHeight].map((v) => v / 2);
-  const backPlateSize = { width: 150, height: 80 };
+  const backPlateSize = { width: 150, height: 135 };
   const [baseX, baseY] = [
     centerX - backPlateSize.width / 2,
     centerY - backPlateSize.height * 1.5,
@@ -201,7 +202,7 @@ function drawHelper() {
   context.fillText(
     "Help",
     centerX,
-    centerY - backPlateSize.height - fontSize * 2.5
+    centerY - backPlateSize.height - fontSize * 3
   );
 
   // text - chat
@@ -230,5 +231,19 @@ function drawHelper() {
     "Tab",
     centerX + 35,
     centerY - backPlateSize.height + fontSize * 1
+  );
+
+  // text - change map
+  context.fillStyle = "lightgray";
+  context.fillText(
+    "Other Map",
+    centerX - 25,
+    centerY - backPlateSize.height + fontSize * 3
+  );
+  context.fillStyle = "rgb(125, 200, 125)";
+  context.fillText(
+    "M",
+    centerX + 35,
+    centerY - backPlateSize.height + fontSize * 3
   );
 }

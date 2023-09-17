@@ -35,8 +35,12 @@ export function joinWebSocketServer(ip, data) {
     });
   }
 
+  return initPosition(ip, id);
+}
+
+export function initPosition(ip, id) {
   // find user
-  joinedUser = metaverseData.users.find(
+  let joinedUser = metaverseData.users.find(
     (user) => user.ip === ip && user.id === id
   );
 

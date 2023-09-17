@@ -34,6 +34,9 @@ let joinedTime = 0;
 // window is not focused
 let isNotFocusedWindow = false;
 
+// changing map
+let isChangingMap = false;
+
 const DEBUG = true;
 
 // ---------------------------------------------------------------------- [ INIT ]
@@ -52,7 +55,7 @@ function init() {
       event.target.value = text.slice(0, 8);
     }
   });
-  nicknameInput.focus();
+  setTimeout(nicknameInput.focus, 0);
 
   // chat content max length is 180
   const chatBox = document.getElementById("chat");
@@ -206,6 +209,11 @@ async function initSocket() {
           }
         }, 7100);
       }
+
+      // change map my position
+      if (data.type === "SOCKET_SEND_CHANGE_MAP_RESPONSE") {
+        world.me.position = data.position || [0, 0];
+      }
     });
   } catch {
     alert("Can't Connect Server");
@@ -232,7 +240,7 @@ function initCanvas() {
 function drawCanvas() {
   isNotFocusedWindow = document.hidden || document.visibilityState === "hidden";
 
-  if (isNotFocusedWindow) {
+  if (isNotFocusedWindow || isChangingMap) {
     // if not focused, cant move
     clearKeys();
     requestAnimationFrame(drawCanvas);
@@ -301,6 +309,30 @@ function canvasResize() {
   canvas.height = canvasHeight;
   canvas.style.width = canvasWidth / window.devicePixelRatio + "px";
   canvas.style.height = canvasHeight / window.devicePixelRatio + "px";
+}
+
+async function changeMap(mapId) {
+  if (world.map.id === mapId) return alert("cannot move to the same map");
+
+  isChangingMap = true;
+
+  let map = {};
+  try {
+    map = await loadMap(mapId);
+  } catch {
+    isChangingMap = false;
+    alert("change map failed");
+    return;
+  }
+
+  world.map = map;
+
+  const chatLogBox = document.getElementById("chat-log");
+  chatLogBox.replaceChildren();
+
+  socket.send(JSON.stringify({ type: "SOCKET_SEND_CHANGE_MAP", map: mapId }));
+
+  isChangingMap = false;
 }
 
 // ---------------------------------------------------------------------- [ TYPE ]
