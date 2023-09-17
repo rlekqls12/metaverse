@@ -20,7 +20,7 @@ const world = {
   },
 };
 
-// block type (Start, Wall)
+// block type (Start, Wall, Erase)
 let blockType = "Start";
 
 // calculate fps
@@ -44,8 +44,13 @@ function init() {
 
   const blockTypeToggle = document.getElementById("button-block-type");
   blockTypeToggle.addEventListener("click", function () {
-    blockTypeToggle.textContent = blockType === "Start" ? "Wall" : "Start";
-    blockType = blockType === "Start" ? "Wall" : "Start";
+    const nextBlockType = {
+      Start: "Wall",
+      Wall: "Erase",
+      Erase: "Start",
+    };
+    blockTypeToggle.textContent = nextBlockType[blockType];
+    blockType = nextBlockType[blockType];
   });
 
   document

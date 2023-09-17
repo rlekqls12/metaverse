@@ -39,6 +39,7 @@ function drawTile() {
         ([sx, sy]) => sx === nowX && sy === nowY
       );
 
+      // block click
       if (nowX === mouseX && nowY === mouseY) {
         cursor = "pointer";
         context.fillStyle = "rgb(100, 175, 100)";
@@ -54,9 +55,13 @@ function drawTile() {
             const now = [nowX, nowY];
             mouseEffectList.push(now);
 
+            // remove wall block
             if (wallIndex !== -1) wall.splice(wallIndex, 1);
+            // add wall block
             else if (blockType === "Wall") wall.push(now);
+            // remove start block
             if (startIndex !== -1) start.splice(startIndex, 1);
+            // add start block
             else if (blockType === "Start") start.push(now);
           }
         }
@@ -65,14 +70,14 @@ function drawTile() {
         context.strokeStyle = "rgba(255, 255, 255, 0.2)";
 
         if (wallIndex !== -1) {
+          // wall
           context.strokeStyle = "rgb(100, 100, 100)";
           context.fillRect(tileX, tileY, tileSize, tileSize);
-        } else {
-          if (startIndex !== -1) {
-            context.fillStyle = "rgb(100, 150, 175)";
-            context.strokeStyle = "rgb(100, 150, 175)";
-            context.fillRect(tileX, tileY, tileSize, tileSize);
-          }
+        } else if (startIndex !== -1) {
+          // start
+          context.fillStyle = "rgb(100, 150, 175)";
+          context.strokeStyle = "rgb(100, 150, 175)";
+          context.fillRect(tileX, tileY, tileSize, tileSize);
         }
       }
 
