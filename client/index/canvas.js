@@ -153,6 +153,16 @@ function drawPosition() {
   context.fillText(positionText, canvasWidth / 2, getFontSize());
 }
 
+function drawMapId() {
+  const [positionX, positionY] = world.me.position.map(Math.floor);
+
+  context.fillStyle = "white";
+  context.textBaseline = "alphabetic";
+  context.textAlign = "center";
+  setFontSize(16);
+  context.fillText(world.map.id, canvasWidth / 2, getFontSize() * 2);
+}
+
 function setFontSize(size) {
   if (isNaN(Number(size))) return;
   if (size <= 0) return;
