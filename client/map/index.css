@@ -54,6 +54,11 @@ body {
   width: 64px;
 }
 
+.map-item:has(#button-save) {
+  position: absolute;
+  right: 0px;
+}
+
 #map-toggle {
   cursor: pointer;
   position: absolute;
