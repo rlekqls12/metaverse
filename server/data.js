@@ -1,14 +1,14 @@
 /** @type { MetaverseData } */
 export const metaverseData = {
   users: [],
-  chats: [],
+  chats: {},
 };
 
 // ---------------------------------------------------------------------- [ TYPE ]
 /**
  * @typedef MetaverseData
  * @property { MetaverseUser[] } users
- * @property { MetaverseChat[] } chats
+ * @property { MetaverseChatGroup } chats
  */
 
 /**
@@ -19,6 +19,10 @@ export const metaverseData = {
  * @property { number[] } position
  * @property { number } speed
  * @property { number } lastConnection
+ */
+
+/**
+ * @typedef { Object.<string, MetaverseChat[]> } MetaverseChatGroup
  */
 
 /**
