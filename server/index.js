@@ -199,4 +199,4 @@ setInterval(function () {
         `${user.id}(${user.ip}, ${new Date(user.lastConnection).toISOString()})`
     );
   serverLog(`>>> # Joined Users`, clients);
-}, 15000);
+}, 60 * 1000);
