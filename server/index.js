@@ -83,7 +83,7 @@ webSocketServer.on("connection", function (webSocket, request) {
           content: `${id}님이 접속하셨습니다.`,
           date: new Date().getTime(),
         };
-        metaverseData.chats[joinedUser.map].push(joinChat);
+        metaverseData.chats[joinedUser.map]?.push(joinChat);
         sendChatEveryone(webSocketServer.clients, [joinChat]);
 
         serverLog(`>>> #[${ip}] Join User`, id);
@@ -123,7 +123,7 @@ webSocketServer.on("connection", function (webSocket, request) {
         serverLog(`>>> #[${ip}, ${id}] User Chat`, data.data);
 
         // save chat log
-        metaverseData.chats[joinedUser.map].push(chat);
+        metaverseData.chats[joinedUser.map]?.push(chat);
 
         // send chat log
         sendChatEveryone(webSocketServer.clients, [chat]);
@@ -146,7 +146,7 @@ webSocketServer.on("connection", function (webSocket, request) {
         content: `${id}님이 퇴장하셨습니다.`,
         date: new Date().getTime(),
       };
-      metaverseData.chats[joinedUser.map].push(leaveChat);
+      metaverseData.chats[joinedUser.map]?.push(leaveChat);
       sendChatEveryone(webSocketServer.clients, [leaveChat]);
 
       // change map
@@ -177,7 +177,7 @@ webSocketServer.on("connection", function (webSocket, request) {
         content: `${id}님이 접속하셨습니다.`,
         date: new Date().getTime(),
       };
-      metaverseData.chats[joinedUser.map].push(joinChat);
+      metaverseData.chats[joinedUser.map]?.push(joinChat);
       sendChatEveryone(webSocketServer.clients, [joinChat]);
     }
   });
@@ -230,7 +230,7 @@ webSocketServer.on("connection", function (webSocket, request) {
       content: `${id}님이 퇴장하셨습니다.`,
       date: new Date().getTime(),
     };
-    metaverseData.chats[joinedUser.map].push(leaveChat);
+    metaverseData.chats[joinedUser.map]?.push(leaveChat);
     sendChatEveryone(webSocketServer.clients, [leaveChat]);
 
     serverLog(`>>> #[${ip}] Leave User`, id);
