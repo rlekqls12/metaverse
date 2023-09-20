@@ -9,7 +9,9 @@ function initMouse() {
 }
 
 function onMouseEvent(event) {
-  mouseMatrix = [event.clientX, event.clientY];
+  mouseMatrix = [event.clientX, event.clientY].map(
+    (position) => position * window.devicePixelRatio
+  );
 
   const type = event.type; // mousemove, mousedown, mouseup
   if (["mousedown", "mouseup"].includes(type)) {
