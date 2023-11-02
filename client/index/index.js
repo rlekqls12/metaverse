@@ -330,6 +330,8 @@ async function changeMap(mapId) {
   const chatLogBox = document.getElementById("chat-log");
   chatLogBox.replaceChildren();
 
+  world.chats = [];
+
   socket.send(JSON.stringify({ type: "SOCKET_SEND_CHANGE_MAP", map: mapId }));
 
   isChangingMap = false;
